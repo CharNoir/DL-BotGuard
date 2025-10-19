@@ -2,8 +2,8 @@
 BMEVITMMA19 task:Bot-guard
 
 Team members:
-Csarkovszkij Artyjom Alekszandrovics -
-Phaxay Thipphasone - FQ9TSP
+- Csarkovszkij Artyjom Alekszandrovics -
+- Phaxay Thipphasone - FQ9TSP
 
 Project Destription
 This project is a study of the  mouse usage patterns and training deep learning models for behavioral biometrics, particularily aims to make a significant contribution to the field of cybersecurity by developing and training advanced deep learning models capable of distinguishing between human and automated (bot) user behaviour based on mouse dynamics.
