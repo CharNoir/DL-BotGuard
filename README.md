@@ -2,7 +2,7 @@
 BMEVITMMA19 task:Bot-guard
 
 Team members:
-- Csarkovszkij Artyjom Alekszandrovics -
+- Csarkovszkij Artyjom Alekszandrovics - N852Z8
 - Phaxay Thipphasone - FQ9TSP
 
 Project Destription
