@@ -1,4 +1,8 @@
-data/boun-mouse-dynamics-dataset/users/
+# Ignore raw PMC dataset (too large for GitHub)
+data/raw/boun-mouse-dynamics-dataset/users/
+
+# Ignore processed data if you don’t want to commit .npz outputs
+data/processed/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
