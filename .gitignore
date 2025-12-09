@@ -1,5 +1,5 @@
 # Ignore raw PMC dataset (too large for GitHub)
-data/raw/boun-mouse-dynamics-dataset/users/
+data/
 
 # Ignore processed data if you don’t want to commit .npz outputs
 data/processed/
