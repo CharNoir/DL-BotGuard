@@ -106,34 +106,10 @@ This dataset complements PMC by providing **real-world, small-scale data** that 
 ## 3. Results
 
 
-
 ## Instructions to run the solution
 
-## Instructions to run the solution
-
-1. **Prepare datasets**  
-   - Download the **PMC dataset** from [Mendeley Data](https://data.mendeley.com/datasets/w6cxr8yc7p/2)  
-     and place the `users/` folder into:  
-    
-    ```
-     data/raw/boun-mouse-dynamics-dataset/ 
-    ``` 
-   - Place our collected dataset (`mouse_events_*.jsonl`, `key_events_*.jsonl`) into:  
-    
-    ```
-     data/raw/our/v1/  
-    ```
-
-2. **(Optional) Collect your own data**  
-   Run the provided logger script to generate new mouse/keyboard logs:  
-   python scripts/mouse_logger.py  
-   This will create new files under:  
-    
-    ```
-   data/raw/our/v1/  
-    ```
-3. **Install dependencies**  
-   Recommended: Python ≥ 3.10. Install with:  
+1. **Install dependencies**
+    Recommended: Python ≥ 3.10. Install with:  
 
    ```
    pip install -r requirements.txt  
@@ -146,7 +122,24 @@ This dataset complements PMC by providing **real-world, small-scale data** that 
    - scikit-learn  
    - tensorflow (for baseline model training)  
    - pynput, psutil, pywin32 (required for mouse_logger.py on Windows)  
+2. **Prepare datasets**  
+   All required datasets are downloaded and prepared automatically.  
+
+   Run the notebook:
+    
+    ```
+     00_Download_Datasets.ipynb
+    ``` 
+
+3. **(Optional) Collect your own data**  
+   Run the provided logger script to generate new mouse/keyboard logs:  
+   python scripts/mouse_logger.py  
+   This will create new files under:  
+    
+    ```
+   data/raw/our/v1/  
+    ```
 
 4. **Run the notebooks**  
-   - notebooks/01_eda.ipynb → exploratory analysis and plots  
-   - notebooks/02_prepare_and_split.ipynb → preprocessing, train/val/test splits, baseline training  
+   - 01_eda.ipynb → exploratory analysis and plots  
+   - 02_prepare_and_split.ipynb → preprocessing, train/val/test splits, baseline training  

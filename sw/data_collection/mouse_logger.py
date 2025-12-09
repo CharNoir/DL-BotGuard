@@ -21,7 +21,7 @@ HASH_WINDOW_TITLES = False   # If True, store sha256(title) + length instead of 
 BASE_DIR = Path(__file__).resolve().parent
 ROOT_DIR = BASE_DIR.parents[1]
 print(ROOT_DIR)
-LOGS_DIR = os.path.join(ROOT_DIR, "data", "raw", "our")
+LOGS_DIR = os.path.join(ROOT_DIR, "data", "raw", "our_bot")
 print(LOGS_DIR)
 SCHEMA_VERSION = "v1" 
 # --------------------------------
@@ -34,8 +34,13 @@ session_id = str(uuid.uuid4())
 log_dir = os.path.join(LOGS_DIR, SCHEMA_VERSION)
 os.makedirs(log_dir, exist_ok=True)
 
-mouse_file = os.path.join(log_dir, f"mouse_events_{run_id}.jsonl")
-keyboard_file = os.path.join(log_dir, f"key_events_{run_id}.jsonl")
+mouse_dir = os.path.join(log_dir, "mouse")
+key_dir = os.path.join(log_dir, "key")
+os.makedirs(mouse_dir, exist_ok=True)
+os.makedirs(key_dir, exist_ok=True)
+
+mouse_file = os.path.join(mouse_dir, f"mouse_events_{run_id}.jsonl")
+keyboard_file = os.path.join(key_dir, f"key_events_{run_id}.jsonl")
 
 def event_base(event_type):
     return {

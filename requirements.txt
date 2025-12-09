@@ -7,3 +7,5 @@ tensorflow
 pynput
 psutil
 pywin32
+
+gdown
