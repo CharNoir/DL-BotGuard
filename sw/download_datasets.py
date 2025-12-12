@@ -7,8 +7,12 @@ import subprocess
 import requests
 import shutil
 
+
+# Name of a hidden file placed inside dataset folder when ready
 MARKER_NAME = ".dataset_ready"
 
+
+# Ceonfig list of datasets
 DATASETS = [
     {
         "name": "our_dataset",
@@ -34,12 +38,33 @@ DATASETS = [
 ]
 
 def _marker_path(folder: Path) -> Path:
+    """Return the full path of the dataset 'ready' marker file."""
     return folder / MARKER_NAME
 
 def is_dataset_ready(folder: Path) -> bool:
+    """
+    Check whether the dataset folder contains a ready-marker file.
+
+    Parameters
+    ----------
+    folder : Path
+
+    Returns
+    -------
+    bool
+    """
     return _marker_path(folder).exists()
 
 def mark_dataset_ready(folder: Path, source: str):
+    """
+    Write a JSON metadata file indicating dataset download/availability.
+
+    Parameters
+    ----------
+    folder : Path
+    source : str
+        A short string describing dataset origin (gdrive, s3, etc.)
+    """
     marker = {
         "source": source,
         "ready_at": datetime.utcnow().isoformat() + "Z",
@@ -48,6 +73,17 @@ def mark_dataset_ready(folder: Path, source: str):
         json.dump(marker, f, indent=2)
 
 def download_gdrive_folder(folder_id: str, output_dir: Path):
+    """
+    Download a Google Drive folder using gdown.
+
+    Parameters
+    ----------
+    folder_id : str
+        Google Drive folder ID.
+
+    output_dir : Path
+        Destination directory.
+    """
     output_dir.mkdir(parents=True, exist_ok=True)
     subprocess.run(
         [
@@ -62,6 +98,14 @@ def download_gdrive_folder(folder_id: str, output_dir: Path):
 
 
 def extract_multipart_zip(zip_path: Path):
+    """
+    Extract a (possibly multi-part) archive using 7z.
+
+    Parameters
+    ----------
+    zip_path : Path
+        Path to the downloaded archive.
+    """
     zip_path = zip_path.resolve()
     dest_dir = zip_path.parent
 
@@ -75,11 +119,33 @@ def extract_multipart_zip(zip_path: Path):
     )
 
 def verify_boun_extracted(dest_dir: Path):
+    """
+    Ensure the BOUN dataset extracted correctly.
+
+    Parameters
+    ----------
+    dest_dir : Path
+
+    Raises
+    ------
+    RuntimeError
+        If expected directory does not exist.
+    """
     expected = dest_dir / "users"
     if not expected.exists():
         raise RuntimeError("BOUN extraction failed: 'users/' directory not found")
 
 def download_and_extract_boun(url: str, dest_dir: Path):
+    """
+    Download and extract the BOUN dataset from a direct URL.
+
+    Parameters
+    ----------
+    url : str
+        URL pointing to dataset .zip.
+    dest_dir : Path
+        Local extraction folder.
+    """
     dest_dir.mkdir(parents=True, exist_ok=True)
 
     zip_path = dest_dir / "boun-mouse-dynamics-dataset.zip"
@@ -97,6 +163,20 @@ def download_and_extract_boun(url: str, dest_dir: Path):
     force_flatten_boun(dest_dir)
 
 def force_flatten_boun(dest_dir: Path):
+    """
+    Flatten nested directory structures in BOUN dataset.
+
+    The archive sometimes extracts to:
+        dest_dir/boun-mouse-dynamics-dataset/*
+    Instead of directly into:
+        dest_dir/*
+
+    This function moves everything up one level.
+
+    Parameters
+    ----------
+    dest_dir : Path
+    """
     nested = dest_dir / dest_dir.name
 
     if not nested.exists():
@@ -115,6 +195,12 @@ def force_flatten_boun(dest_dir: Path):
     print("[✓] BOUN flattened successfully")
 
 def ensure_all_downloaded():
+    """
+    Ensure all datasets listed in DATASETS are present and ready.
+
+    If the marker file is missing, download the dataset.
+    If download or extraction is required, mark the dataset when done.
+    """
     for ds in DATASETS:
         path = ds["path"]
 

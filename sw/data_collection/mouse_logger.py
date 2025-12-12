@@ -2,7 +2,6 @@ import time
 import json
 import uuid
 import os
-import hashlib
 from datetime import datetime
 from pynput import mouse, keyboard
 from pathlib import Path
@@ -43,6 +42,7 @@ mouse_file = os.path.join(mouse_dir, f"mouse_events_{run_id}.jsonl")
 keyboard_file = os.path.join(key_dir, f"key_events_{run_id}.jsonl")
 
 def event_base(event_type):
+    """Generate the base event metadata shared by all events."""
     return {
         "schema_version": 1,
         "event_id": str(uuid.uuid4()),
@@ -53,14 +53,12 @@ def event_base(event_type):
     }
 
 def write_event(filepath, event):
+    """Append event dictionary as a JSONL line."""
     with open(filepath, "a", encoding="utf-8") as f:
         f.write(json.dumps(event) + "\n")
 
 _cached_hwnd = None
 _cached_window_info = None
-
-def _hash_text(s: str) -> str:
-    return hashlib.sha256(s.encode("utf-8")).hexdigest()
 
 def get_foreground_window_info():
     """
