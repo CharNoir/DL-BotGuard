@@ -1,5 +1,6 @@
 import torch
 import numpy as np
+import matplotlib.pyplot as plt
 from sklearn.metrics import classification_report, confusion_matrix
 
 
@@ -14,6 +15,7 @@ def evaluate_with_thresholds(
 ):
     """
     Evaluate a binary classifier across multiple probability thresholds.
+    Returns probabilities, detailed threshold results, and plotting metrics.
 
     Parameters
     ----------
@@ -75,6 +77,17 @@ def evaluate_with_thresholds(
 
     probs = np.concatenate(all_probs, axis=0)
 
+    plot_metrics = {
+        "thresholds": [],
+        "precision_0": [],
+        "recall_0": [],
+        "f1_0": [],
+        "precision_1": [],
+        "recall_1": [],
+        "f1_1": [],
+        "accuracy": [],
+    }
+    
     # Collect results for each threshold
     results = {}
     for thr in thresholds:
@@ -83,6 +96,29 @@ def evaluate_with_thresholds(
         metrics_text = classification_report(y_test, preds, digits=3, output_dict=False)
         metrics_dict = classification_report(y_test, preds, digits=3, output_dict=True)
         cm = confusion_matrix(y_test, preds)
+        
+        # Extract per-class metrics
+        p0 = metrics_dict["0"]["precision"]
+        r0 = metrics_dict["0"]["recall"]
+        f0 = metrics_dict["0"]["f1-score"]
+
+        p1 = metrics_dict["1"]["precision"]
+        r1 = metrics_dict["1"]["recall"]
+        f1 = metrics_dict["1"]["f1-score"]
+
+        acc = cm.diagonal().sum() / cm.sum()
+
+        plot_metrics["thresholds"].append(thr)
+
+        plot_metrics["precision_0"].append(p0)
+        plot_metrics["recall_0"].append(r0)
+        plot_metrics["f1_0"].append(f0)
+
+        plot_metrics["precision_1"].append(p1)
+        plot_metrics["recall_1"].append(r1)
+        plot_metrics["f1_1"].append(f1)
+
+        plot_metrics["accuracy"].append(acc)
 
         results[thr] = {
             "preds": preds,
@@ -94,4 +130,4 @@ def evaluate_with_thresholds(
             print(f"\n===== Threshold = {thr:.2f} =====")
             print(metrics_text)
 
-    return probs, results
+    return probs, results, plot_metrics
