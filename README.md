@@ -147,3 +147,5 @@ This dataset complements PMC by providing **real-world, small-scale data** that 
    - 02_prepare_and_split.ipynb -> preprocessing, train/val/test splits, baseline training  
    - 03_Training_boun_dataset.ipynb -> run training and evaluation on BOUN dataset
    - 03_Training_own_dataset.ipynb -> run training and evaluation on our own dataset
+
+   ❗Training with BOUN dataset is suggested to run on a system with high amount of memory! 28gb+ (In Colab it is A100 GPU; Powerful CPU also can work, but training will be significantly slower)
