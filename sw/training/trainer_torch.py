@@ -90,10 +90,12 @@ def train_torch(
 
     best_val_acc = -1
 
+    # Training loop
     for ep in range(1, epochs + 1):
         model.train()
         total_loss = 0
 
+        # Mini-batch training
         for xb, yb in loader_train:
             xb, yb = xb.to(device), yb.to(device)
 
@@ -106,6 +108,7 @@ def train_torch(
 
         avg_train_loss = total_loss / len(loader_train)
 
+        # Validation (if provided)
         val_acc = None
         if X_val is not None and y_val is not None:
             model.eval()
@@ -116,6 +119,7 @@ def train_torch(
                 preds = logits.argmax(dim=1)
                 val_acc = (preds == yv).float().mean().item()
 
+        # Logging: console + Weights&Biases
         if wandb_run:
             wandb_run.log({
                 "train_loss": avg_train_loss,
@@ -125,6 +129,7 @@ def train_torch(
 
         print(f"Epoch {ep}/{epochs}: loss={avg_train_loss:.4f}, val_acc={val_acc}")
 
+        # Save best model (if enabled)
         if save_best_path and val_acc is not None:
             if val_acc > best_val_acc:
                 best_val_acc = val_acc

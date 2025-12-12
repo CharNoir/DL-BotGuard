@@ -103,10 +103,7 @@ This schema it is abstracted to timing only (for privacy).
 For **Milestone 1**, we only used **mouse movement events** (`pointermove`, `click`, `scroll`) from the collected sessions.  
 This dataset complements PMC by providing **real-world, small-scale data** that we can directly control and extend.  
 
-## 3. Results
-
-
-## Instructions to run the solution
+## 3. Instructions to run the solution
 
 1. **Install dependencies**
     Recommended: Python ≥ 3.10. Install with:  
@@ -123,13 +120,16 @@ This dataset complements PMC by providing **real-world, small-scale data** that 
    - tensorflow (for baseline model training)  
    - pynput, psutil, pywin32 (required for mouse_logger.py on Windows)  
 2. **Prepare datasets**  
-   All required datasets are downloaded and prepared automatically.  
-
-   Run the notebook:
+    You do not need to download datasets manually.
+    Every training notebook begins with the call:  
     
     ```
-     00_Download_Datasets.ipynb
+     from dataset.download import ensure_all_downloaded
+      ensure_all_downloaded()
     ``` 
+    The following training notebooks automatically trigger dataset setup:
+    - Training_own_dataset.ipynb
+    - Training_boun_dataset.ipynb
 
 3. **(Optional) Collect your own data**  
    Run the provided logger script to generate new mouse/keyboard logs:  
@@ -141,5 +141,9 @@ This dataset complements PMC by providing **real-world, small-scale data** that 
     ```
 
 4. **Run the notebooks**  
-   - 01_eda.ipynb → exploratory analysis and plots  
-   - 02_prepare_and_split.ipynb → preprocessing, train/val/test splits, baseline training  
+❗Follow the parts inside the notebook depending on your environment (local / Colab)
+
+   - 01_eda.ipynb -> exploratory analysis and plots  
+   - 02_prepare_and_split.ipynb -> preprocessing, train/val/test splits, baseline training  
+   - 03_Training_boun_dataset.ipynb -> run training and evaluation on BOUN dataset
+   - 03_Training_own_dataset.ipynb -> run training and evaluation on our own dataset

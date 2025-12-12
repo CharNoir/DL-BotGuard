@@ -22,12 +22,14 @@ class GRUMouseNet(nn.Module):
     ):
         super().__init__()
         
+        # Store config so the model can reconstruct itself later
         self.input_dim = input_dim
         self.hidden_dim = hidden_dim
         self.num_layers = num_layers
         self.bidirectional = bidirectional
         self.dropout = dropout
 
+        # GRU encoder
         self.gru = nn.GRU(
             input_size=input_dim,
             hidden_size=hidden_dim,
@@ -37,8 +39,10 @@ class GRUMouseNet(nn.Module):
             dropout=dropout if num_layers > 1 else 0.0,
         )
 
+        # Output dimension doubles for bidirectional GRUs (forward + backward)
         gru_out_dim = hidden_dim * (2 if bidirectional else 1)
 
+        # Classification head
         self.classifier = nn.Sequential(
             nn.Linear(gru_out_dim, 64),
             nn.ReLU(),
